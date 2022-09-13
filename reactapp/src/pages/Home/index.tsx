@@ -4,18 +4,32 @@ import './styles.css';
 import Card from '../../components/Card';
 
 export function Home() {
-  const [studentName, setStudentName] = useState();
+  const [studentName, setStudentName] = useState('');
+  const [students, setStudents] = useState([]);
+
+  function handleAddStudent(){
+    const newStudent = {
+      name: studentName,
+      time: new Date().toLocaleTimeString("pt-br", {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      })
+    };
+
+    setStudents(previousState => [...previousState, newStudent]);
+  }
 
   return (
     <div className='container'>
-      <h1>Nome: {studentName}</h1>
+      <h1>Lista de Presença</h1>
 
       <input type="text" placeholder="Digite o nome..." onChange={e => setStudentName(e.target.value)} />
-      <button type="button">Adicionar</button>
+      <button type="button" onClick={handleAddStudent}>Adicionar</button>
 
-      <Card name="Rodrigo" time="10.55.25"/>
-      <Card name="João"  time="11:00:00"/>
-      
+    {
+      students.map(student => <Card name={student.name} time={student.time}/>)
+    }
     </div>
   )
 }
